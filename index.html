@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Топ сикрет</title>
+  <style>
+    :root{ --bg:#0e0f13; --card:#171922; --muted:#8b93a7; --text:#e6e9f2; --accent:#9b5de5; --ring:#c77dff; --taskTitle:#c8a2ff; }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Inter,Arial,sans-serif;
+         background:var(--bg);color:var(--text);}
+    .wrap{max-width:980px;margin-inline:auto;padding:24px}
+    h1{font-size:clamp(24px,3vw,34px);margin:0 0 18px 0;text-align:center;}
+    .sub{color:var(--muted);margin-bottom:16px;text-align:center;}
+
+    /* Gate (intro) */
+    .gate{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:18px;text-align:center}
+    .gate .gate-note{color:var(--muted);font-size:13px}
+
+    #tasks{display:flex;flex-direction:column;gap:14px}
+
+    .card{background:var(--card);border:1px solid rgba(255,255,255,.12);border-radius:14px;
+          padding:16px;box-shadow:0 6px 20px rgba(0,0,0,.35)}
+    .card h3{margin:0 0 6px 0;font-size:22px;color:var(--taskTitle);}
+    .card .task-text{margin:0 0 14px 0;font-size:20px;font-weight:600;color:var(--text);}
+    input[type="text"]{width:100%;padding:12px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.2);
+                       background:#0d0f15;color:var(--text);outline:none}
+    input[type="text"]:focus{border-color:var(--ring);box-shadow:0 0 0 3px color-mix(in srgb, var(--ring) 30%, transparent)}
+
+    .results{margin-top:40px;text-align:center}
+    .results h2{margin-bottom:20px;font-size:24px}
+
+    .collectors-row{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}
+    .collector input{width:5ch;text-align:center;font-size:32px;padding:16px;border-radius:12px;
+                     border:1px solid rgba(255,255,255,.25);background:#171922;color:var(--text);
+                     box-shadow:0 4px 12px rgba(0,0,0,.45)}
+
+    .hint{font-size:13px;color:var(--muted);margin-top:8px;cursor:pointer}
+    .task-hint{text-align:right}
+    .hidden-part{display:none}
+    .hint.show .hidden-part{display:inline}
+
+    .btn{appearance:none;border:none;padding:12px 16px;border-radius:12px;cursor:pointer;
+         font-weight:700;box-shadow:0 6px 16px rgba(0,0,0,.35);transition:background 0.3s}
+    .btn.neutral{background:var(--accent);color:#fff}
+    .btn.ok{background:#28c76f;color:#06120a}
+    .btn.err{background:#ea5455;color:#fff}
+
+    /* Hide content until gate is opened */
+    #puzzle{display:none}
+    .show-content #puzzle{display:block;animation:fadeIn .35s ease}
+    .show-content #openGate{display:none}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>С днём рождения, Ванечка&lt;3</h1>
+    <p class="sub">Не могла оставить тебя без загадок в твой день рождения! Но думаю, в этот раз все будет чуть проще... Есть шесть маленьких задачек, ответ везде односложен и приведёт тебя к сюрпризу</p>
+
+    <!-- Gate button -->
+    <div class="gate" id="openGate">
+      <button id="startBtn" class="btn neutral">Ну что ж... Давай решать!</button>
+    </div>
+
+    <!-- Hidden content -->
+    <div id="puzzle">
+      <section id="tasks">
+        <article class="card" data-task="1">
+          <h3>Простое начало</h3>
+          <div class="task-text">(x - x₀)² + (y - y₀)² = R²</div>
+          <input id="answer1" type="text" placeholder="Тык, чтобы печатать" />
+          <p class="hint task-hint">Подсказка<span class="hidden-part">: Нарисуй, посмотри, что получится</span></p>
+        </article>
+
+        <article class="card" data-task="2">
+          <h3>Становится чуть сложнее</h3>
+          <div class="task-text">Тут есть ошибка, найди: ···|-··-··--|·-·---···--·-····-·- </div>
+          <input id="answer2" type="text" placeholder="Тык, чтобы печатать" />
+          <p class="hint task-hint">Подсказка<span class="hidden-part">: ···|-·· -· · --|·-· --- ···- - · -· ·· ·-·-</span></p>
+        </article>
+
+        <article class="card" data-task="3">
+          <h3>Музыкальная пауза</h3>
+          <div class="task-text">Дорийский лад</div>
+          <input id="answer3" type="text" placeholder="Тык, чтобы печатать" />
+          <p class="hint task-hint">Подсказка<span class="hidden-part">: Тут тебя спасёт определение из Википедии... (помни, что я в музыке не смыслю)</span></p>
+        </article>
+
+        <article class="card" data-task="4">
+          <h3>Посчитаем</h3>
+          <div class="task-text">(24−22)⋅8⋅(4+3)−3⋅4</div>
+          <input id="answer4" type="text" placeholder="Тык, чтобы печатать" />
+          <p class="hint task-hint">Подсказка<span class="hidden-part">: Все дороги!</span></p>
+        </article>
+
+        <article class="card" data-task="5">
+          <h3>Небольшая остановка</h3>
+          <div class="task-text">🧑‍🦯🦅🚬🐘🦗🧑🏼‍🦰🫎</div>
+          <input id="answer5" type="text" placeholder="Тык, чтобы печатать" />
+          <p class="hint task-hint">Подсказка<span class="hidden-part">: 🦗->𓃭, а берём мы первую букву трёхбуквенного сокращения</span></p>
+        </article>
+
+        <article class="card" data-task="6">
+          <h3>Почти всё!</h3>
+          <div class="task-text">Тут чего-то не хватает - Съешь мягкого зефира, вот этих румяных нежных булок, да выпей ещё чаю</div>
+          <input id="answer6" type="text" placeholder="Тык, чтобы печатать" />
+          <p class="hint task-hint">Подсказка<span class="hidden-part">: Это должна быть панграмма, но что-то пошло не так</span></p>
+        </article>
+      </section>
+
+      <section class="results">
+        <h2>Соберём всё, что получилось</h2>
+        <div class="collectors-row" id="collectors">
+          <div class="collector"><input type="text" id="col1" readonly maxlength="1"></div>
+          <div class="collector"><input type="text" id="col2" readonly maxlength="1"></div>
+          <div class="collector"><input type="text" id="col3" readonly maxlength="1"></div>
+          <div class="collector"><input type="text" id="col4" readonly maxlength="1"></div>
+          <div class="collector"><input type="text" id="col5" readonly maxlength="1"></div>
+          <div class="collector"><input type="text" id="col6" readonly maxlength="1"></div>
+          <div class="collector"><input type="text" id="col7" readonly maxlength="1"></div>
+        </div>
+        <div style="margin-top:14px">
+          <button id="checkBtn" class="btn neutral">Ты как всегда прав?</button>
+        </div>
+        <p id="hintLine" class="hint">А что теперь?<span class="hidden-part"> Это шифр</span></p>
+        <p id="finalHint" class="hint">Понятнее не стало<span class="hidden-part">: У тебя есть два одинаковых символа в шифре, они соответствуют кому-то второму, чья смерть дала название красивому храму</span></p>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // Gate logic
+    const startBtn = document.getElementById('startBtn');
+    startBtn.addEventListener('click', ()=>{
+      document.body.classList.add('show-content');
+      document.getElementById('tasks').scrollIntoView({behavior:'smooth', block:'start'});
+    });
+
+    // Existing puzzle logic
+    const TAKE_FIRST_CHARS = 1;
+    const answers = Array.from({length:6}, (_,i)=>document.getElementById(`answer${i+1}`));
+    const collectors = Array.from(document.querySelectorAll('#collectors input'));
+
+    function firstChars(str, n){ const t=(str||"").trim(); return [...t].slice(0,n).join(""); }
+    function updateCollectors(){
+      const vals = answers.map(inp => (inp.value || ''));
+      const picked = vals.map(v => firstChars(v, TAKE_FIRST_CHARS));
+      const finals = [picked[0]||'', picked[1]||'', picked[2]||'', picked[3]||'', picked[4]||'', picked[5]||'', picked[4]||''];
+      collectors.forEach((col,i)=> col.value = finals[i] || '');
+    }
+    answers.forEach(inp => inp.addEventListener('input', updateCollectors));
+    updateCollectors();
+
+    const checkBtn = document.getElementById('checkBtn');
+    const TARGET = 'отрсдцд';
+    const hintLine = document.getElementById('hintLine');
+    const finalHint = document.getElementById('finalHint');
+    let resetTimer = null;
+    const RESET_MS = 2500;
+
+    function finalString(){ return collectors.map(c=> (c.value||'')).join('').toLowerCase(); }
+    function resetCheck(){
+      if(resetTimer){ clearTimeout(resetTimer); resetTimer = null; }
+      checkBtn.textContent = 'Ты как всегда прав?';
+      checkBtn.classList.remove('ok','err');
+      checkBtn.classList.add('neutral');
+    }
+
+    checkBtn.addEventListener('click', ()=>{
+      const ok = finalString() === TARGET;
+      if(ok){
+        checkBtn.textContent = 'Конечно';
+        checkBtn.classList.remove('neutral','err');
+        checkBtn.classList.add('ok');
+      } else {
+        checkBtn.textContent = 'Случился сбой в матрице';
+        checkBtn.classList.remove('neutral','ok');
+        checkBtn.classList.add('err');
+        if(resetTimer){ clearTimeout(resetTimer); }
+        resetTimer = setTimeout(resetCheck, RESET_MS);
+      }
+    });
+
+    hintLine.addEventListener('click', ()=>{ hintLine.classList.toggle('show'); });
+    finalHint.addEventListener('click', ()=>{ finalHint.classList.toggle('show'); });
+    document.querySelectorAll('.task-hint').forEach(el=>{
+      el.addEventListener('click', ()=> el.classList.toggle('show'));
+    });
+  </script>
+</body>
+</html>
