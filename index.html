@@ -126,6 +126,7 @@
         </div>
         <p id="hintLine" class="hint">А что теперь?<span class="hidden-part"> Это шифр</span></p>
         <p id="finalHint" class="hint">Понятнее не стало<span class="hidden-part">: У тебя есть два одинаковых символа в шифре, они соответствуют кому-то второму, чья смерть дала название красивому храму</span></p>
+        <p id="finafinallHint" class="hint">Финальная подсказка (спойлер ко всему веселью)<span class="hidden-part">: Румын</span></p>
       </section>
     </div>
   </main>
@@ -185,6 +186,7 @@
 
     hintLine.addEventListener('click', ()=>{ hintLine.classList.toggle('show'); });
     finalHint.addEventListener('click', ()=>{ finalHint.classList.toggle('show'); });
+    finafinallHint.addEventListener('click', ()=>{ finafinallHint.classList.toggle('show'); });
     document.querySelectorAll('.task-hint').forEach(el=>{
       el.addEventListener('click', ()=> el.classList.toggle('show'));
     });
